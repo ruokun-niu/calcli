@@ -30,7 +30,7 @@ func main() {
 	fmt.Printf("File created successfully at %s\n", filepath)
 }
 
-func init() {
+func InitializeText() {
 	user, err := user.Current()
 	if err != nil {
 		fmt.Println(err)
