@@ -1,4 +1,9 @@
-package main
+// ------------------------------------------------------------
+// Copyright © 2022 HalfsugarDev halfsugardev7@gmail.com
+// Licensed under the MIT License.
+// ------------------------------------------------------------
+
+package init
 
 import (
 	"fmt"
@@ -8,7 +13,10 @@ import (
 )
 
 func main() {
+	InitializeText()
+}
 
+func InitializeText() {
 	user, err := user.Current()
 	if err != nil {
 		fmt.Println(err)

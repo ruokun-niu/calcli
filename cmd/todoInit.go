@@ -1,7 +1,7 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
-*/
+// ------------------------------------------------------------
+// Copyright © 2022 HalfsugarDev halfsugardev7@gmail.com
+// Licensed under the MIT License.
+// ------------------------------------------------------------
 package cmd
 
 import (
@@ -15,12 +15,11 @@ import (
 var todoInitCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initialize the notebook txt file",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Long: `This command will create a txt file called 'todo.txt' on your computer
+The exact directory (MacOS) where the file lives is as follows:
+'/Users/{username}/calcli/todo.txt'
+Party on with calcli!
+	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("init called")
 		initializer.InitializeText()
