@@ -5,7 +5,6 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -46,27 +45,20 @@ func init() {
 }
 
 func writeFile(item string) error {
-	fmt.Println(len(item))
+	toWrite := item + "\n"
 	directory := dir.TodoDirectory
-	file, err := os.OpenFile(directory, os.O_APPEND|os.O_WRONLY, 0644)
-
+	file, err := os.OpenFile(directory, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		file.Close()
 		return fmt.Errorf("failed to open the file, err: %d", err)
 	}
-	fmt.Println("level reached")
-	datawriter := bufio.NewWriter(file)
-	_, err = datawriter.WriteString(item + "\n")
-	if err != nil {
+	if _, err = file.Write([]byte(toWrite)); err != nil {
 		file.Close()
 		return fmt.Errorf("failed to write into the todo list, err: %d", err)
 	}
-	fmt.Println("level reached")
 	if err := file.Close(); err != nil {
 		return fmt.Errorf("Error closing the file")
 	}
-	fmt.Println("level reached")
-	datawriter.Flush()
 
 	return nil
 }
