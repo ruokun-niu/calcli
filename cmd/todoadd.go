@@ -5,8 +5,12 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"os"
 
+	dir "github.com/ruokun-niu/calcli/constants"
 	"github.com/spf13/cobra"
 )
 
@@ -14,22 +18,55 @@ import (
 var todoaddCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Add an item to your todo list ",
-	Long:  `The cli todo list behaves like a queue (FIFO)`,
+	Long: `The cli todo list behaves like a queue (FIFO)
+This command will add a new item to the end of the list
+Type -h to see other ways of adding an item`,
 	Run: func(cmd *cobra.Command, args []string) {
+		item := args[0]
+		err := writeFile(item)
+		if err != nil {
+			log.Fatal(err)
+		}
 		fmt.Println("todoadd called")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(todoaddCmd)
+	todoCmd.AddCommand(todoaddCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// todoaddCmd.PersistentFlags().String("foo", "", "A help for foo")
-
+	todoaddCmd.PersistentFlags().String("temp", "", "A help for foo")
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// todoaddCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+func writeFile(item string) error {
+	fmt.Println(len(item))
+	directory := dir.TodoDirectory
+	file, err := os.OpenFile(directory, os.O_APPEND|os.O_WRONLY, 0644)
+
+	if err != nil {
+		file.Close()
+		return fmt.Errorf("failed to open the file, err: %d", err)
+	}
+	fmt.Println("level reached")
+	datawriter := bufio.NewWriter(file)
+	_, err = datawriter.WriteString(item + "\n")
+	if err != nil {
+		file.Close()
+		return fmt.Errorf("failed to write into the todo list, err: %d", err)
+	}
+	fmt.Println("level reached")
+	if err := file.Close(); err != nil {
+		return fmt.Errorf("Error closing the file")
+	}
+	fmt.Println("level reached")
+	datawriter.Flush()
+
+	return nil
 }
