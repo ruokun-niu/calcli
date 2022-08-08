@@ -7,7 +7,7 @@ import (
 	dir "github.com/ruokun-niu/calcli/constants"
 )
 
-func verifyFileExist() bool {
+func VerifyFileExist() bool {
 	directory := dir.TodoDirectory
 	if _, err := os.Stat(directory); errors.Is(err, os.ErrNotExist) {
 		return false
