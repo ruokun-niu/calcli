@@ -21,12 +21,18 @@ var todoaddCmd = &cobra.Command{
 This command will add a new item to the end of the list
 Type -h to see other ways of adding an item`,
 	Run: func(cmd *cobra.Command, args []string) {
-		item := args[0]
-		err := writeFile(item)
-		if err != nil {
-			log.Fatal(err)
+		fileExists := VerifyFileExist()
+		if !fileExists {
+			// File does not exist; asks the user to run init
+			fmt.Println(`Hmmm seems like the todo list is not found
+Have you run the command 'calcli todo init'?`)
+		} else {
+			item := args[0]
+			err := writeFile(item)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
-		fmt.Println("todoadd called")
 	},
 }
 
