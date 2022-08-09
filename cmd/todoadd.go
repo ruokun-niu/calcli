@@ -1,8 +1,8 @@
+
 // ------------------------------------------------------------
 // Copyright © 2022 HalfsugarDev halfsugardev7@gmail.com
 // Licensed under the MIT License.
 // ------------------------------------------------------------
-
 package cmd
 
 import (
@@ -33,7 +33,6 @@ Have you run the command 'calcli todo init'?`)
 			if err != nil {
 				log.Fatal(err)
 			}
-		}
 	},
 }
 
