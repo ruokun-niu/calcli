@@ -1,7 +1,7 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
-*/
+// ------------------------------------------------------------
+// Copyright © 2022 HalfsugarDev halfsugardev7@gmail.com
+// Licensed under the MIT License.
+// ------------------------------------------------------------
 package cmd
 
 import (
