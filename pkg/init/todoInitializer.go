@@ -12,10 +12,6 @@ import (
 	"path"
 )
 
-func main() {
-	InitializeText()
-}
-
 func InitializeText() {
 	user, err := user.Current()
 	if err != nil {
