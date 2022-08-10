@@ -33,7 +33,7 @@ func init() {
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// todoCmd.PersistentFlags().String("foo", "", "A help for foo")
-	todoCmd.PersistentFlags().String("init", "", "Initialize the todo list")
+	// todoCmd.PersistentFlags().String("init", "", "Initialize the todo list")
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	todoCmd.Flags().BoolP("todo", "t", false, "Help message for toggle")
