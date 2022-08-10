@@ -1,4 +1,3 @@
-
 // ------------------------------------------------------------
 // Copyright © 2022 HalfsugarDev halfsugardev7@gmail.com
 // Licensed under the MIT License.
@@ -33,6 +32,7 @@ Have you run the command 'calcli todo init'?`)
 			if err != nil {
 				log.Fatal(err)
 			}
+		}
 	},
 }
 
@@ -58,8 +58,8 @@ func writeFile(item string) error {
 		file.Close()
 		return fmt.Errorf("failed to open the file, err: %d", err)
 	}
+	defer file.Close()
 	if _, err = file.Write([]byte(toWrite)); err != nil {
-		file.Close()
 		return fmt.Errorf("failed to write into the todo list, err: %d", err)
 	}
 	if err := file.Close(); err != nil {
