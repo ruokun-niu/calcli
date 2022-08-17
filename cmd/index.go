@@ -9,6 +9,11 @@ import (
 )
 
 func modifyIndex() error {
+	index, err := ViewIndex()
+	if err != nil {
+		return err
+	}
+	index++
 	return nil
 }
 
