@@ -31,7 +31,7 @@ Have you run the command 'calcli todo init'?`)
 			if err != nil {
 				log.Fatalf("An error has occurred, err: %d", err)
 			}
-			fmt.Println(index)
+			_ = index
 			err = viewItems()
 			if err != nil {
 				log.Fatalf("An error has occurred, err: %d", err)
