@@ -34,7 +34,11 @@ The deleted item will not be added to the completed list
 		if err != nil {
 			log.Fatalf("an error has occurred when trying to delete an item, err: %d", err)
 		}
-		fmt.Println("delete called")
+		err = decrementIndex()
+		if err != nil {
+			log.Fatalf("an error has occurred when trying to decrement the index, err: %d", err)
+		}
+		fmt.Println("Item deleted")
 	},
 }
 
