@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	dir "github.com/ruokun-niu/calcli/constants"
 	"github.com/spf13/cobra"
@@ -51,7 +52,17 @@ func init() {
 }
 
 func writeFile(item string) error {
-	toWrite := item + "\n"
+	currIndex, err := ViewIndex()
+	if err != nil {
+		return fmt.Errorf("encountered an error when trying to retrieve the index; err: %d", err)
+	}
+	currIndex++
+
+	toWrite := strconv.Itoa(currIndex) + " " + item + "\n"
+	err = incrementIndex()
+	if err != nil {
+		return fmt.Errorf("encountered an error when trying to increment the index; err: %d", err)
+	}
 	directory := dir.TodoDirectory
 	file, err := os.OpenFile(directory, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
