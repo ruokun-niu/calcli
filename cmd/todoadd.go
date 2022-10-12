@@ -52,7 +52,7 @@ func init() {
 }
 
 func writeFile(item string) error {
-	currIndex, err := ViewIndex()
+	currIndex, err := ViewIndex(dir.TodoDirectory)
 	if err != nil {
 		return fmt.Errorf("encountered an error when trying to retrieve the index; err: %d", err)
 	}

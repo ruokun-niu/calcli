@@ -10,7 +10,6 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"strings"
 
 	dir "github.com/ruokun-niu/calcli/constants"
 	"github.com/spf13/cobra"
@@ -86,7 +85,7 @@ func deleteItem(index int) error {
 	for scanner.Scan() {
 		// Scan to the end of the file
 		// changing the indices along the way
-		newText := editIndex(scanner.Text())
+		newText := EditIndex(scanner.Text())
 		_, err = newFile.WriteString(newText)
 		_, err = newFile.WriteString("\n")
 	}
@@ -99,13 +98,4 @@ func deleteItem(index int) error {
 	}
 
 	return nil
-}
-
-func editIndex(currItem string) string {
-	originalStrIndex := strings.Split(currItem, " ")[0]
-	index, _ := strconv.Atoi(originalStrIndex)
-	index--
-	strIndex := strconv.Itoa(index)
-	result := strings.Replace(currItem, originalStrIndex, strIndex, 1)
-	return result
 }

@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 
 	dir "github.com/ruokun-niu/calcli/constants"
 )
 
 func incrementIndex() error {
-	index, err := ViewIndex()
+	index, err := ViewIndex(dir.TodoDirectory)
 	if err != nil {
 		return err
 	}
@@ -53,7 +54,7 @@ func incrementIndex() error {
 }
 
 func decrementIndex() error {
-	index, err := ViewIndex()
+	index, err := ViewIndex(dir.TodoDirectory)
 	if err != nil {
 		return err
 	}
@@ -95,8 +96,7 @@ func decrementIndex() error {
 	return nil
 }
 
-func ViewIndex() (int, error) {
-	directory := dir.TodoDirectory
+func ViewIndex(directory string) (int, error) {
 	file, err := os.Open(directory)
 	if err != nil {
 		return -1, err
@@ -112,4 +112,13 @@ func ViewIndex() (int, error) {
 		return -1, err
 	}
 	return result, nil
+}
+
+func EditIndex(currItem string) string {
+	originalStrIndex := strings.Split(currItem, " ")[0]
+	index, _ := strconv.Atoi(originalStrIndex)
+	index--
+	strIndex := strconv.Itoa(index)
+	result := strings.Replace(currItem, originalStrIndex, strIndex, 1)
+	return result
 }

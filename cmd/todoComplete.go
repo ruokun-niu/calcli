@@ -29,6 +29,7 @@ You can view the complete list by running the command 'calcli view --complete`,
 			initCompleteList()
 		}
 		toCompIndex, err := strconv.Atoi(args[0])
+		err = checkCompListLen(true)
 		if err != nil {
 			log.Fatalf("an error has occurred when trying to complete an item, err: %d", err)
 		}
@@ -133,5 +134,61 @@ func writeToComplete(item string) error {
 	_, err = completeFile.WriteString(item)
 	_, err = completeFile.WriteString("\n")
 
+	return nil
+}
+
+func checkCompListLen(replace bool) error {
+	// This function will check the current length of the complete list
+	// If replace is set to true and length is 10, the last-pushed item wil be poped
+	dir := dir.CompleteDirectory
+	index, err := ViewIndex(dir)
+	if err != nil {
+		return err
+	}
+	if index == 10 && replace {
+		newIndex := index - 1
+		err = updateCompleteIndex(newIndex)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func updateCompleteIndex(newIndex int) error {
+	folderDir := "/Users/ruokunniu/calcli/foo.txt"
+
+	newFile, err := os.Create(folderDir)
+
+	if err != nil {
+		return fmt.Errorf("encountered an error when trying to create a dummy txt, err: %d", err)
+	}
+	defer newFile.Close()
+	strIndex := strconv.Itoa(newIndex) + "\n"
+	_, err = newFile.WriteString(strIndex)
+	if err != nil {
+		return fmt.Errorf("encountered an error when trying to append the new index, err: %d", err)
+	}
+	originalFile, err := os.Open(dir.CompleteDirectory)
+	if err != nil {
+		return err
+	}
+	scanner := bufio.NewScanner(originalFile)
+
+	scanner.Scan()
+	scanner.Scan() // Skip two lines
+	for scanner.Scan() {
+		newText := EditIndex(scanner.Text())
+		_, err = newFile.WriteString(newText)
+		_, err = newFile.WriteString("\n")
+	}
+
+	newFile.Sync()
+
+	//rename foo
+	err = os.Rename(folderDir, dir.CompleteDirectory)
+	if err != nil {
+		return err
+	}
 	return nil
 }

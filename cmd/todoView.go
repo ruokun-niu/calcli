@@ -27,7 +27,7 @@ If the todo list has not been initialized yet, it will prompt the user to do so`
 			fmt.Println(`Hmmm seems like the todo list is not found
 Have you run the command 'calcli todo init'?`)
 		} else {
-			index, err := ViewIndex()
+			index, err := ViewIndex(dir.TodoDirectory)
 			if err != nil {
 				log.Fatalf("An error has occurred, err: %d", err)
 			}
