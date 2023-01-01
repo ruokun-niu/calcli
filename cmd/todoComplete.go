@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path"
 	"strconv"
+	"strings"
 
 	dir "github.com/ruokun-niu/calcli/constants"
 	"github.com/spf13/cobra"
@@ -26,6 +26,7 @@ of 10 items.
 You can view the complete list by running the command 'calcli view --complete`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if !VerifyCompleteExist() {
+			fmt.Println("hi")
 			initCompleteList()
 		}
 		toCompIndex, err := strconv.Atoi(args[0])
@@ -61,14 +62,13 @@ func init() {
 
 func completeItem(index int) error {
 	directory := dir.TodoDirectory
-	folderDir := "/Users/ruokunniu/calcli/foo.txt"
+	folderDir := "/Users/ruokunniu/calcli/temp.txt"
 
 	newFile, err := os.Create(folderDir)
 	if err != nil {
 		return err
 	}
 	defer newFile.Close()
-
 	originalFile, err := os.Open(directory)
 	if err != nil {
 		return err
@@ -92,7 +92,6 @@ func completeItem(index int) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Reawwched")
 	for scanner.Scan() {
 		// Scan to the end of the file
 		// changing the indices along the way
@@ -103,20 +102,21 @@ func completeItem(index int) error {
 	newFile.Sync()
 
 	//rename foo
-	fmt.Println(folderDir)
-	fmt.Println(directory)
-	// err = os.Rename(folderDir, directory)
-	// if err != nil {
-	// 	return err
-	// }
+	err = os.Rename(folderDir, directory)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
 	return nil
 }
 
 func initCompleteList() error {
-	directory := dir.TodoFolderDirectory
-	filePath := path.Join(directory, "complete.txt")
-	file, err := os.Open(filePath)
+	// directory := dir.TodoFolderDirectory
+	filePath := dir.CompleteDirectory
+	file, err := os.Create(filePath)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 	defer file.Close()
@@ -135,13 +135,14 @@ func writeToComplete(item string) error {
 	if err != nil {
 		return err
 	}
-	// currIndex, err := ViewIndex(dir.CompleteDirectory)
-	// if err != nil {
-	// 	return err
-	// }
+	currIndex, err := ViewIndex(dir.CompleteDirectory)
+	if err != nil {
+		return err
+	}
 	defer completeFile.Close()
-	// toWrite := strconv.Itoa(currIndex) + " " +
-	toWrite := item + "\n"
+	item = strings.Split(item, " ")[1]
+	toWrite := strconv.Itoa(currIndex) + " " + item + "\n"
+	// toWrite := item + "\n"
 	_, err = completeFile.WriteString(toWrite)
 
 	return nil

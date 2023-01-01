@@ -127,7 +127,9 @@ func EditIndex(currItem string) string {
 
 func IncrementIndexForComplete() error {
 	index, err := ViewIndex(dir.CompleteDirectory)
-	if err != nil {
+	if index == -1 {
+		index = 0
+	} else if err != nil {
 		return err
 	}
 	index++
