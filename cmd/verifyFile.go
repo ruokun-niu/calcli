@@ -19,3 +19,11 @@ func VerifyFileExist() bool {
 	}
 	return true
 }
+
+func VerifyCompleteExist() bool {
+	directory := dir.CompleteDirectory
+	if _, err := os.Stat(directory); errors.Is(err, os.ErrNotExist) {
+		return false
+	}
+	return true
+}
