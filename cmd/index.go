@@ -105,8 +105,10 @@ func ViewIndex(directory string) (int, error) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-
 	scanner.Scan()
+	if scanner.Text() == "" {
+		return 0, nil
+	}
 	result, err := strconv.Atoi(scanner.Text())
 	if err != nil {
 		return -1, err
@@ -121,4 +123,47 @@ func EditIndex(currItem string) string {
 	strIndex := strconv.Itoa(index)
 	result := strings.Replace(currItem, originalStrIndex, strIndex, 1)
 	return result
+}
+
+func IncrementIndexForComplete() error {
+	index, err := ViewIndex(dir.CompleteDirectory)
+	if err != nil {
+		return err
+	}
+	index++
+	folderDir := "/Users/ruokunniu/calcli/foo.txt"
+
+	newFile, err := os.Create(folderDir)
+
+	if err != nil {
+		return fmt.Errorf("encountered an error when trying to create a dummy txt, err: %d", err)
+	}
+	defer newFile.Close()
+
+	// Adding the index to the top of the text file
+	strIndex := strconv.Itoa(index) + "\n"
+	_, err = newFile.WriteString(strIndex)
+	if err != nil {
+		return fmt.Errorf("encountered an error when trying to append the new index, err: %d", err)
+	}
+	originalFile, err := os.Open(dir.CompleteDirectory)
+	if err != nil {
+		return err
+	}
+	scanner := bufio.NewScanner(originalFile)
+
+	//Skipping first line
+	scanner.Scan()
+	for scanner.Scan() {
+		// Copy the content from the original txt to the new one
+		_, err = newFile.WriteString(scanner.Text())
+		_, err = newFile.WriteString("\n")
+	}
+	newFile.Sync()
+
+	err = os.Rename(folderDir, dir.CompleteDirectory)
+	if err != nil {
+		return err
+	}
+	return nil
 }

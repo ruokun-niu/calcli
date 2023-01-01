@@ -92,21 +92,23 @@ func completeItem(index int) error {
 	if err != nil {
 		return err
 	}
-
+	fmt.Println("Reawwched")
 	for scanner.Scan() {
 		// Scan to the end of the file
 		// changing the indices along the way
-		newText := editIndex(scanner.Text())
+		newText := EditIndex(scanner.Text())
 		_, err = newFile.WriteString(newText)
 		_, err = newFile.WriteString("\n")
 	}
 	newFile.Sync()
 
 	//rename foo
-	err = os.Rename(folderDir, directory)
-	if err != nil {
-		return err
-	}
+	fmt.Println(folderDir)
+	fmt.Println(directory)
+	// err = os.Rename(folderDir, directory)
+	// if err != nil {
+	// 	return err
+	// }
 	return nil
 }
 
@@ -125,14 +127,22 @@ func initCompleteList() error {
 
 func writeToComplete(item string) error {
 	completeDir := dir.CompleteDirectory
+	err := IncrementIndexForComplete()
+	if err != nil {
+		return err
+	}
 	completeFile, err := os.OpenFile(completeDir, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
 	}
+	// currIndex, err := ViewIndex(dir.CompleteDirectory)
+	// if err != nil {
+	// 	return err
+	// }
 	defer completeFile.Close()
-
-	_, err = completeFile.WriteString(item)
-	_, err = completeFile.WriteString("\n")
+	// toWrite := strconv.Itoa(currIndex) + " " +
+	toWrite := item + "\n"
+	_, err = completeFile.WriteString(toWrite)
 
 	return nil
 }
