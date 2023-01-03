@@ -71,6 +71,17 @@ func viewCompletedItems() error {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+	index, err := ViewIndex(directory)
+	if err != nil {
+		return err
+	}
+	if index == 1 {
+		fmt.Printf("There is %d item in the completed list\n", index)
+	} else {
+		fmt.Printf("There are %d items in the completed list\n", index)
+	}
+
+	scanner.Scan() //Skipping the first line
 	for scanner.Scan() {
 		fmt.Println(scanner.Text())
 	}
@@ -91,6 +102,16 @@ func viewItems() error {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+	index, err := ViewIndex(directory)
+	if err != nil {
+		return err
+	}
+	if index == 1 {
+		fmt.Printf("There is %d item in the todo list\n", index)
+	} else {
+		fmt.Printf("There are %d items in the todo list\n", index)
+	}
+	scanner.Scan() //Skipping the first line
 	for scanner.Scan() {
 		fmt.Println(scanner.Text())
 	}
