@@ -92,10 +92,10 @@ func deleteItem(index int) error {
 	newFile.Sync()
 
 	//rename foo
-	// err = os.Rename(folderDir, directory)
-	// if err != nil {
-	// 	return err
-	// }
+	err = os.Rename(folderDir, directory)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
