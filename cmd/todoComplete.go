@@ -62,7 +62,7 @@ func init() {
 
 func completeItem(index int) error {
 	directory := dir.TodoDirectory
-	folderDir := "/Users/ruokunniu/calcli/temp.txt"
+	folderDir := dir.CompleteRenameDirectory
 
 	newFile, err := os.Create(folderDir)
 	if err != nil {

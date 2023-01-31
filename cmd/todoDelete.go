@@ -58,7 +58,7 @@ func init() {
 func deleteItem(index int) error {
 	directory := dir.TodoDirectory
 
-	folderDir := "/Users/ruokunniu/calcli/foo.txt"
+	folderDir := dir.TodoRenameDirectory
 
 	newFile, err := os.Create(folderDir)
 	if err != nil {
