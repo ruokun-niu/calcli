@@ -7,7 +7,6 @@ package cmd
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 
@@ -15,27 +14,49 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const (
+	runHelpComplete = "Type 'calcli delete -h' for more details on using this command."
+	ContactRepo     = "Please submit an issue or email halfsugardev7@gmail.com"
+)
+
 // deleteCmd represents the delete command
 var deleteCmd = &cobra.Command{
 	Use:   "delete",
-	Short: "Delete an item from your todo list",
-	Long: `Delete an item from your todo list.
-The deleted item will not be added to the completed list
+	Short: "Remove an item from your todo list",
+	Long: `Remove an item from your todo list.
+The deleted item will not be added to the completed list.
+To delete an item, simply input the index of the item:
+e.g. 'calcli delete 1' will delete the item with index #1.
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		//TODO add a check to see if an argument is passed
 		// maybe a fatal check?
+		if len(args) == 0 {
+			fmt.Println("Please input an index")
+			fmt.Println("e.g. calcli delete 1")
+			fmt.Println(runHelpComplete)
+			os.Exit(0)
+		}
 		toDelIndex, err := strconv.Atoi(args[0])
 		if err != nil {
-			log.Fatalf("an error has occurred when trying to delete an item, err: %d", err)
+			fmt.Println("An error has occurred when trying to remove the item")
+			fmt.Println(ContactRepo)
+			fmt.Println(runHelpComplete)
+			os.Exit(0)
 		}
 		err = deleteItem(toDelIndex)
 		if err != nil {
-			log.Fatalf("an error has occurred when trying to delete an item, err: %d", err)
+			fmt.Println("An error has occurred when trying to remove the item")
+			fmt.Println(ContactRepo)
+			fmt.Println(runHelpComplete)
+			os.Exit(0)
 		}
 		err = decrementIndex()
 		if err != nil {
-			log.Fatalf("an error has occurred when trying to decrement the index, err: %d", err)
+			fmt.Println("An error has occurred when trying to decrement the index")
+			fmt.Println(ContactRepo)
+			fmt.Println(runHelpComplete)
+			os.Exit(0)
 		}
 		fmt.Println("Item deleted")
 	},
