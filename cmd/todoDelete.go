@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	runHelpComplete = "Type 'calcli delete -h' for more details on using this command."
-	ContactRepo     = "Please submit an issue or email halfsugardev7@gmail.com"
+	runHelpDelete = "Type 'calcli delete -h' for more details on using this command."
+	ContactRepo   = "Please submit an issue or email halfsugardev7@gmail.com"
 )
 
 // deleteCmd represents the delete command
@@ -34,28 +34,40 @@ e.g. 'calcli delete 1' will delete the item with index #1.
 		if len(args) == 0 {
 			fmt.Println("Please input an index")
 			fmt.Println("e.g. calcli delete 1")
-			fmt.Println(runHelpComplete)
+			fmt.Println(runHelpDelete)
 			os.Exit(0)
 		}
 		toDelIndex, err := strconv.Atoi(args[0])
 		if err != nil {
 			fmt.Println("An error has occurred when trying to remove the item")
 			fmt.Println(ContactRepo)
-			fmt.Println(runHelpComplete)
+			fmt.Println(runHelpDelete)
+			os.Exit(0)
+		}
+		validIndex, err := verifyIndex(toDelIndex)
+		if err != nil {
+			fmt.Println("An error has occurred when trying to remove the item")
+			fmt.Println(ContactRepo)
+			fmt.Println(runHelpDelete)
+			os.Exit(0)
+		}
+		if !validIndex {
+			fmt.Println("Invalid Index.")
+			fmt.Println(runHelpDelete)
 			os.Exit(0)
 		}
 		err = deleteItem(toDelIndex)
 		if err != nil {
 			fmt.Println("An error has occurred when trying to remove the item")
 			fmt.Println(ContactRepo)
-			fmt.Println(runHelpComplete)
+			fmt.Println(runHelpDelete)
 			os.Exit(0)
 		}
 		err = decrementIndex()
 		if err != nil {
 			fmt.Println("An error has occurred when trying to decrement the index")
 			fmt.Println(ContactRepo)
-			fmt.Println(runHelpComplete)
+			fmt.Println(runHelpDelete)
 			os.Exit(0)
 		}
 		fmt.Println("Item deleted")

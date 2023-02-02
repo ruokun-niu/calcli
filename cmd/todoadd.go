@@ -6,12 +6,15 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 
 	dir "github.com/ruokun-niu/calcli/constants"
 	"github.com/spf13/cobra"
+)
+
+const (
+	runHelpAdd = "Type 'calcli add -h' for more details on using this command."
 )
 
 // todoaddCmd represents the todoadd command
@@ -20,18 +23,22 @@ var todoaddCmd = &cobra.Command{
 	Short: "Add an item to your todo list ",
 	Long: `The cli todo list behaves like a queue (FIFO)
 This command will add a new item to the end of the list
-Type -h to see other ways of adding an item`,
+e.g. 'calcli add coffee'`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fileExists := VerifyFileExist()
 		if !fileExists {
 			// File does not exist; asks the user to run init
 			fmt.Println(`Hmmm seems like the todo list is not found
 Have you run the command 'calcli todo init'?`)
+			os.Exit(0)
 		} else {
 			item := args[0]
 			err := writeFile(item)
 			if err != nil {
-				log.Fatal(err)
+				fmt.Println(err)
+				fmt.Println(ContactRepo)
+				fmt.Println(runHelpAdd)
+				os.Exit(0)
 			}
 		}
 	},
@@ -67,7 +74,7 @@ func writeFile(item string) error {
 	file, err := os.OpenFile(directory, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		file.Close()
-		return fmt.Errorf("failed to open the file, err: %d", err)
+		return fmt.Errorf("failed to open the todo list, err: %d", err)
 	}
 	defer file.Close()
 	if _, err = file.Write([]byte(toWrite)); err != nil {
