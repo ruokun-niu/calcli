@@ -14,6 +14,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const (
+	runHelpView = "Type 'calcli view -h' for more details on using this command."
+)
+
 // todoViewCmd represents the todoView command
 var todoViewCmd = &cobra.Command{
 	Use:   "view",
@@ -31,17 +35,16 @@ Have you run the command 'calcli todo init'?`)
 			if viewComplete { // if we are viewing the complete list
 				err := viewCompletedItems()
 				if err != nil {
-					log.Fatalf("An error has occurred, err: %d", err)
+					fmt.Println("An error occurred when trying to view the list")
+					fmt.Println(ContactRepo)
+					fmt.Println(runHelpView)
 				}
 			} else { // viewing the normal todo list
-				// index, err := ViewIndex(dir.TodoDirectory)
-				// if err != nil {
-				// 	log.Fatalf("An error has occurred, err: %d", err)
-				// }
-				// _ = index
 				err := viewItems()
 				if err != nil {
-					log.Fatalf("An error has occurred, err: %d", err)
+					fmt.Println("An error occurred when trying to view the list")
+					fmt.Println(ContactRepo)
+					fmt.Println(runHelpView)
 				}
 			}
 		}

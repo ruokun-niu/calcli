@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -48,7 +47,7 @@ e.g. 'cacli complete 1'`,
 		}
 		validIndex, err := verifyIndex(toCompIndex)
 		if err != nil {
-			fmt.Println("An error has occurred when trying to complete the item")
+			fmt.Println("An error occurred when trying to complete the item")
 			fmt.Println(ContactRepo)
 			fmt.Println(runHelpComplete)
 			os.Exit(0)
@@ -60,14 +59,14 @@ e.g. 'cacli complete 1'`,
 		}
 		err = completeItem(toCompIndex)
 		if err != nil {
-			fmt.Println("An error has occurred when trying to add the item to the complete list")
+			fmt.Println("An error occurred when trying to add the item to the complete list")
 			fmt.Println(ContactRepo)
 			fmt.Println(runHelpComplete)
 			os.Exit(0)
 		}
 		err = decrementIndex()
 		if err != nil {
-			fmt.Println("An error has occurred when trying to decrement the index")
+			fmt.Println("An error occurred when trying to decrement the index")
 			fmt.Println(ContactRepo)
 			fmt.Println(runHelpComplete)
 			os.Exit(0)

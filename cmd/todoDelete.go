@@ -39,14 +39,14 @@ e.g. 'calcli delete 1' will delete the item with index #1.
 		}
 		toDelIndex, err := strconv.Atoi(args[0])
 		if err != nil {
-			fmt.Println("An error has occurred when trying to remove the item")
+			fmt.Println("An error occurred when trying to remove the item")
 			fmt.Println(ContactRepo)
 			fmt.Println(runHelpDelete)
 			os.Exit(0)
 		}
 		validIndex, err := verifyIndex(toDelIndex)
 		if err != nil {
-			fmt.Println("An error has occurred when trying to remove the item")
+			fmt.Println("An error occurred when trying to remove the item")
 			fmt.Println(ContactRepo)
 			fmt.Println(runHelpDelete)
 			os.Exit(0)
@@ -58,14 +58,14 @@ e.g. 'calcli delete 1' will delete the item with index #1.
 		}
 		err = deleteItem(toDelIndex)
 		if err != nil {
-			fmt.Println("An error has occurred when trying to remove the item")
+			fmt.Println("An error occurred when trying to remove the item")
 			fmt.Println(ContactRepo)
 			fmt.Println(runHelpDelete)
 			os.Exit(0)
 		}
 		err = decrementIndex()
 		if err != nil {
-			fmt.Println("An error has occurred when trying to decrement the index")
+			fmt.Println("An error occurred when trying to decrement the index")
 			fmt.Println(ContactRepo)
 			fmt.Println(runHelpDelete)
 			os.Exit(0)
