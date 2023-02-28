@@ -27,3 +27,17 @@ func VerifyCompleteExist() bool {
 	}
 	return true
 }
+
+func verifyIndex(index int) (bool, error) {
+	currIndex, err := ViewIndex(dir.TodoDirectory)
+
+	if err != nil {
+		return false, err
+	}
+
+	if index > currIndex {
+		return false, nil
+	}
+
+	return true, nil
+}

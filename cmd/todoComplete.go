@@ -1,19 +1,21 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
 
 	dir "github.com/ruokun-niu/calcli/constants"
 	"github.com/spf13/cobra"
+)
+
+const (
+	runHelpComplete = "Type 'calcli complete -h' for more details on using this command."
 )
 
 // completeCmd represents the complete command
@@ -23,24 +25,51 @@ var completeCmd = &cobra.Command{
 	Long: `Marking an item as completed will remove it from the current list.
 The item will be added to the complete list, which holds a maximum
 of 10 items.
-You can view the complete list by running the command 'calcli view --complete`,
+To complete an item, simply input the index of the item that you wish to complete
+e.g. 'cacli complete 1'`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if !VerifyCompleteExist() {
-			fmt.Println("hi")
+			fmt.Println("Creating the complete list")
 			initCompleteList()
+		}
+		if len(args) == 0 {
+			fmt.Println("Please input an index")
+			fmt.Println("e.g. calcli complete 1")
+			fmt.Println(runHelpComplete)
+			os.Exit(0)
 		}
 		toCompIndex, err := strconv.Atoi(args[0])
 		err = checkCompListLen(true)
 		if err != nil {
-			log.Fatalf("an error has occurred when trying to complete an item, err: %d", err)
+			fmt.Println("Invalid Index.")
+			fmt.Println(runHelpComplete)
+			os.Exit(0)
+		}
+		validIndex, err := verifyIndex(toCompIndex)
+		if err != nil {
+			fmt.Println("An error occurred when trying to complete the item")
+			fmt.Println(ContactRepo)
+			fmt.Println(runHelpComplete)
+			os.Exit(0)
+		}
+		if !validIndex {
+			fmt.Println("Invalid Index.")
+			fmt.Println(runHelpComplete)
+			os.Exit(0)
 		}
 		err = completeItem(toCompIndex)
 		if err != nil {
-			log.Fatalf("an error has occurred when trying to complete an item, err: %d", err)
+			fmt.Println("An error occurred when trying to add the item to the complete list")
+			fmt.Println(ContactRepo)
+			fmt.Println(runHelpComplete)
+			os.Exit(0)
 		}
 		err = decrementIndex()
 		if err != nil {
-			log.Fatalf("an error has occurred when trying to decrement the index, err: %d", err)
+			fmt.Println("An error occurred when trying to decrement the index")
+			fmt.Println(ContactRepo)
+			fmt.Println(runHelpComplete)
+			os.Exit(0)
 		}
 		fmt.Println("complete called")
 	},
