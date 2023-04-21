@@ -1,18 +1,37 @@
 # This is an example .goreleaser.yml file with some sensible defaults.
 # Make sure to check the documentation at https://goreleaser.com
-builds:
-  - id: "calcli"
-    goarch:
-      - amd64
-      - arm64
-    goos:
-      - darwin
-      - linux
-    flags:
-      - -mod=vendor
+# https://medium.com/@ben.lafferty/deploying-go-cli-applications-316e9cca16a4
 
-release:
-  prerelease: auto
+# set environment variables to be used in the build process
+env:
+    - GO111MODULE=on
+    - CGO_ENABLED=0
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+builds:
+  - env:
+    - CGO_ENABLED=0
+    main: ./main.go
+    binary: calcli
+
+archives:
+  - format: tar.gz
+    name_template: '{{.ProjectName}}_{{.Version}}_{{.Os}}-{{.Arch}}'
+    replacements:
+      replacements:
+        amd64: 64bit
+        386: 32bit
+        arm: ARM
+        arm64: ARM64
+        darwin: macOS
+        linux: Linux
+        windows: Windows
+      files:
+        - Readme.MD
+        - LICENSE
+
 
 
 universal_binaries:
